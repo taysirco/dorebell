@@ -10,13 +10,13 @@
 
 ```bash
 # TikTok Events API Integration
-TIKTOK_ACCESS_TOKEN=d893b9d1452befeca7e896ee1716518d51236f78
+TIKTOK_ACCESS_TOKEN=a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0
 ENABLE_TIKTOK_API=true
 ```
 
 ### 2. TikTok Pixel Information
 - **Pixel ID**: `D2JK9NRC77UFE4JPKPVG`
-- **Access Token**: `d893b9d1452befeca7e896ee1716518d51236f78`
+- **Access Token**: `a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0`
 - **API Endpoint**: `https://business-api.tiktok.com/open_api/v1.3/event/track/`
 
 ## Implemented Events
@@ -35,6 +35,21 @@ ENABLE_TIKTOK_API=true
 - **Trigger**: عند إرسال نموذج التواصل
 - **Location**: `app/api/contact/route.ts`
 - **Data**: موضوع الرسالة، بيانات الاتصال (مشفرة)
+
+### 4. Lead 🎯
+- **Trigger**: عند إرسال أي نموذج (طلب أو تواصل)
+- **Location**: `app/api/order/route.ts` + `app/api/contact/route.ts`
+- **Data**: وصف العميل المحتمل، قيمة العملية، بيانات العميل
+
+### 5. Search 🔍
+- **Trigger**: عند البحث في الموقع
+- **Location**: `app/api/tiktok-search/route.ts`
+- **Data**: نص البحث، معرف المحتوى
+
+### 6. ClickButton 👆
+- **Trigger**: عند الضغط على الأزرار المهمة
+- **Location**: `app/api/tiktok-button/route.ts`
+- **Data**: نص الزر، معرف المحتوى
 
 ## Server-Side Tracking Benefits
 
@@ -65,6 +80,36 @@ Track ViewContent events من الخادم.
   "content_name": "جرس الباب الذكي بالكاميرا",
   "value": 1999,
   "currency": "EGP",
+  "user_data": {
+    "external_id": "user_123"
+  }
+}
+```
+
+### POST /api/tiktok-button
+Track ClickButton events من الخادم.
+
+**Request Body:**
+```json
+{
+  "button_text": "اطلب الآن",
+  "content_id": "order-button",
+  "content_name": "Order Button Click",
+  "user_data": {
+    "external_id": "user_123"
+  }
+}
+```
+
+### POST /api/tiktok-search
+Track Search events من الخادم.
+
+**Request Body:**
+```json
+{
+  "search_string": "جرس ذكي",
+  "content_id": "site-search",
+  "content_name": "Site Search",
   "user_data": {
     "external_id": "user_123"
   }
@@ -118,6 +163,8 @@ curl -X POST http://localhost:3000/api/tiktok-view \
 - `/api/order`: 5 طلبات كل 15 دقيقة لكل IP
 - `/api/contact`: 3 طلبات كل 15 دقيقة لكل IP  
 - `/api/tiktok-view`: 10 طلبات كل 5 دقائق لكل IP
+- `/api/tiktok-button`: 20 طلبات كل 5 دقائق لكل IP
+- `/api/tiktok-search`: 15 طلبات كل 5 دقائق لكل IP
 
 ## Error Handling
 

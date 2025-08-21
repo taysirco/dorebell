@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendOrderToMake } from '@/lib/make-webhook'
-import { trackPlaceAnOrder, trackInitiateCheckout } from '@/lib/tiktok-api'
+import { trackPlaceAnOrder, trackInitiateCheckout, trackLead } from '@/lib/tiktok-api'
 
 interface OrderData {
   fullName: string
@@ -190,6 +190,24 @@ export async function POST(request: NextRequest) {
         value: totalPrice,
         currency: 'EGP',
         order_id: order.id,
+        user: {
+          phone: orderData.phoneNumber,
+          external_id: order.id
+        },
+        context: {
+          ip: ip,
+          user_agent: request.headers.get('user-agent') || '',
+          url: request.headers.get('origin') || ''
+        }
+      })
+
+      // Also track as Lead event
+      await trackLead({
+        lead_description: `Product order: ${orderData.productName} - Quantity: ${orderData.quantity} - Value: ${totalPrice} EGP`,
+        content_id: 'doorbell-order-lead',
+        content_name: 'Product Order Lead',
+        value: totalPrice,
+        currency: 'EGP',
         user: {
           phone: orderData.phoneNumber,
           external_id: order.id

@@ -3,7 +3,7 @@ import crypto from 'crypto'
 // TikTok Events API Configuration
 const TIKTOK_CONFIG = {
   PIXEL_ID: 'D2JK9NRC77UFE4JPKPVG',
-  ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || 'd893b9d1452befeca7e896ee1716518d51236f78',
+  ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || 'a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0',
   API_ENDPOINT: 'https://business-api.tiktok.com/open_api/v1.3/event/track/',
   ENABLED: process.env.ENABLE_TIKTOK_API === 'true'
 }
@@ -21,6 +21,8 @@ export type TikTokEventType =
   | 'Search'
   | 'Contact'
   | 'SubmitForm'
+  | 'ClickButton'
+  | 'Lead'
 
 // Event data interface
 export interface TikTokEventData {
@@ -37,6 +39,8 @@ export interface TikTokEventData {
     search_string?: string
     description?: string
     url?: string
+    button_text?: string
+    lead_description?: string
   }
   context?: {
     user_agent?: string
@@ -302,6 +306,115 @@ export async function trackSubmitForm(data: {
       value: data.value,
       currency: data.currency || 'EGP',
       description: 'Form submitted - Lead generated'
+    },
+    user: data.user,
+    context: data.context
+  })
+}
+
+export async function trackSearch(data: {
+  search_string: string
+  content_id?: string
+  content_name?: string
+  user?: TikTokEventData['user']
+  context?: TikTokEventData['context']
+}): Promise<boolean> {
+  return sendTikTokEvent({
+    event: 'Search',
+    properties: {
+      content_id: data.content_id || 'search-query',
+      content_name: data.content_name || `Search: ${data.search_string}`,
+      content_type: 'search',
+      search_string: data.search_string,
+      description: `User searched for: ${data.search_string}`
+    },
+    user: data.user,
+    context: data.context
+  })
+}
+
+export async function trackClickButton(data: {
+  button_text: string
+  content_id?: string
+  content_name?: string
+  user?: TikTokEventData['user']
+  context?: TikTokEventData['context']
+}): Promise<boolean> {
+  return sendTikTokEvent({
+    event: 'ClickButton',
+    properties: {
+      content_id: data.content_id || 'button-click',
+      content_name: data.content_name || `Button: ${data.button_text}`,
+      content_type: 'button',
+      button_text: data.button_text,
+      description: `Button clicked: ${data.button_text}`
+    },
+    user: data.user,
+    context: data.context
+  })
+}
+
+export async function trackAddToWishlist(data: {
+  content_id: string
+  content_name: string
+  value?: number
+  currency?: string
+  user?: TikTokEventData['user']
+  context?: TikTokEventData['context']
+}): Promise<boolean> {
+  return sendTikTokEvent({
+    event: 'AddToWishlist',
+    properties: {
+      content_id: data.content_id,
+      content_name: data.content_name,
+      content_type: 'product',
+      value: data.value,
+      currency: data.currency || 'EGP',
+      description: 'Item added to wishlist'
+    },
+    user: data.user,
+    context: data.context
+  })
+}
+
+export async function trackCompleteRegistration(data: {
+  content_id?: string
+  content_name?: string
+  user?: TikTokEventData['user']
+  context?: TikTokEventData['context']
+}): Promise<boolean> {
+  return sendTikTokEvent({
+    event: 'CompleteRegistration',
+    properties: {
+      content_id: data.content_id || 'user-registration',
+      content_name: data.content_name || 'User Registration',
+      content_type: 'registration',
+      description: 'User registration completed'
+    },
+    user: data.user,
+    context: data.context
+  })
+}
+
+export async function trackLead(data: {
+  lead_description: string
+  content_id?: string
+  content_name?: string
+  value?: number
+  currency?: string
+  user?: TikTokEventData['user']
+  context?: TikTokEventData['context']
+}): Promise<boolean> {
+  return sendTikTokEvent({
+    event: 'Lead',
+    properties: {
+      content_id: data.content_id || 'lead-generated',
+      content_name: data.content_name || 'Lead Generated',
+      content_type: 'lead',
+      value: data.value,
+      currency: data.currency || 'EGP',
+      lead_description: data.lead_description,
+      description: `Lead: ${data.lead_description}`
     },
     user: data.user,
     context: data.context

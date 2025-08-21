@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactToMake } from '@/lib/make-webhook'
-import { trackContact } from '@/lib/tiktok-api'
+import { trackContact, trackLead } from '@/lib/tiktok-api'
 
 interface ContactData {
   name: string
@@ -145,6 +145,23 @@ export async function POST(request: NextRequest) {
       await trackContact({
         content_id: 'contact-form',
         content_name: `Contact: ${contactData.subject}`,
+        user: {
+          phone: contactData.phone,
+          email: contactData.email,
+          external_id: `contact_${Date.now()}`
+        },
+        context: {
+          ip: ip,
+          user_agent: request.headers.get('user-agent') || '',
+          url: request.headers.get('origin') || ''
+        }
+      })
+
+      // Also track as Lead event
+      await trackLead({
+        lead_description: `Contact inquiry: ${contactData.subject} - ${contactData.message.substring(0, 100)}${contactData.message.length > 100 ? '...' : ''}`,
+        content_id: 'contact-lead',
+        content_name: 'Contact Form Lead',
         user: {
           phone: contactData.phone,
           email: contactData.email,
