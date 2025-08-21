@@ -15,13 +15,19 @@ export interface OrderWebhookData {
   name: string;
   email: string;
   phone: string;
+  whatsappNumber: string;
   address: string;
+  area: string;
   city: string;
   quantity: number;
+  productName: string;
+  unitPrice: string;
   totalPrice: number;
   timestamp: string;
   source: 'website';
   status: 'pending';
+  orderDate: string;
+  orderTime: string;
 }
 
 // Generic webhook sender function
@@ -87,16 +93,23 @@ export async function sendOrderToMake(orderData: {
   name: string;
   email: string;
   phone: string;
+  whatsappNumber: string;
   address: string;
+  area: string;
   city: string;
   quantity: number;
+  productName: string;
+  unitPrice: string;
   totalPrice: number;
 }): Promise<boolean> {
+  const timestamp = new Date().toISOString();
   const webhookData: OrderWebhookData = {
     ...orderData,
-    timestamp: new Date().toISOString(),
+    timestamp,
     source: 'website',
-    status: 'pending'
+    status: 'pending',
+    orderDate: new Date().toLocaleDateString('ar-EG'),
+    orderTime: new Date().toLocaleTimeString('ar-EG')
   };
 
   return sendWebhook(MAKE_CONFIG.ORDER_WEBHOOK, webhookData);
@@ -118,13 +131,44 @@ export async function testMakeConnection(): Promise<{success: boolean, message: 
   };
 
   try {
-    const contactTest = await sendWebhook(MAKE_CONFIG.CONTACT_WEBHOOK, testData);
-    const orderTest = await sendWebhook(MAKE_CONFIG.ORDER_WEBHOOK, testData);
+    // Test contact webhook
+    const contactTestData = {
+      name: 'اختبار التكامل',
+      email: 'test@dorebell.com',
+      phone: '01234567890',
+      message: 'رسالة اختبار للتكامل مع Make.com',
+      timestamp: new Date().toISOString(),
+      source: 'website',
+      page: 'test'
+    };
+
+    // Test order webhook with all fields
+    const orderTestData = {
+      name: 'عميل اختبار',
+      email: 'test@temp.com',
+      phone: '01234567890',
+      whatsappNumber: '01234567890',
+      address: 'عنوان اختبار للتكامل',
+      area: 'منطقة الاختبار',
+      city: 'القاهرة',
+      quantity: 1,
+      productName: 'جرس الباب الذكي بالكاميرا',
+      unitPrice: '1999',
+      totalPrice: 1999,
+      timestamp: new Date().toISOString(),
+      source: 'website',
+      status: 'pending',
+      orderDate: new Date().toLocaleDateString('ar-EG'),
+      orderTime: new Date().toLocaleTimeString('ar-EG')
+    };
+
+    const contactTest = await sendWebhook(MAKE_CONFIG.CONTACT_WEBHOOK, contactTestData);
+    const orderTest = await sendWebhook(MAKE_CONFIG.ORDER_WEBHOOK, orderTestData);
 
     if (contactTest && orderTest) {
       return {
         success: true,
-        message: 'Both webhooks are working correctly'
+        message: 'Both webhooks are working correctly with complete data'
       };
     } else {
       return {

@@ -45,19 +45,23 @@
 #### كرر نفس الخطوات مع بيانات الطلبات:
 
 ```
-| التاريخ | الوقت | اسم العميل | الهاتف | المدينة | العنوان | الكمية | المبلغ | الحالة |
+| التاريخ | الوقت | اسم العميل | الهاتف | واتساب | المحافظة | المنطقة | العنوان | المنتج | سعر الوحدة | الكمية | المبلغ الإجمالي | الحالة |
 ```
 
 ربط البيانات:
-- **Date**: `{{formatDate(1.timestamp; "DD/MM/YYYY")}}`
-- **Time**: `{{formatDate(1.timestamp; "HH:mm:ss")}}`
+- **Date**: `{{1.orderDate}}`
+- **Time**: `{{1.orderTime}}`
 - **Customer**: `{{1.name}}`
 - **Phone**: `{{1.phone}}`
+- **WhatsApp**: `{{1.whatsappNumber}}`
 - **City**: `{{1.city}}`
+- **Area**: `{{1.area}}`
 - **Address**: `{{1.address}}`
+- **Product**: `{{1.productName}}`
+- **Unit Price**: `{{1.unitPrice}}`
 - **Quantity**: `{{1.quantity}}`
 - **Total**: `{{1.totalPrice}}`
-- **Status**: `pending`
+- **Status**: `{{1.status}}`
 
 ---
 

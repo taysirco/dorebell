@@ -165,11 +165,15 @@ export async function POST(request: NextRequest) {
     try {
       await sendOrderToMake({
         name: orderData.fullName,
-        email: `${orderData.phoneNumber}@whatsapp.com`, // Placeholder email
+        email: `${orderData.phoneNumber}@temp.com`, // Placeholder email for systems that require it
         phone: orderData.phoneNumber,
-        address: `${orderData.area}, ${orderData.address}`,
+        whatsappNumber: orderData.whatsappNumber,
+        address: orderData.address,
+        area: orderData.area,
         city: orderData.city,
         quantity: orderData.quantity,
+        productName: orderData.productName,
+        unitPrice: orderData.price,
         totalPrice: totalPrice
       })
     } catch (makeError) {
