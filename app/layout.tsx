@@ -187,8 +187,13 @@ export default function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '568427635944659');
-              fbq('track', 'PageView');
+              
+              try {
+                fbq('init', '568427635944659');
+                fbq('track', 'PageView');
+              } catch (error) {
+                console.log('Meta Pixel initialization error:', error);
+              }
             `
           }}
         />

@@ -46,15 +46,19 @@ function ThankYouContent() {
     }
 
     // Meta Pixel Purchase Tracking
-    if (typeof window !== 'undefined' && (window as any).fbq && orderId) {
-      (window as any).fbq('track', 'Purchase', {
-        content_type: 'product',
-        content_ids: ['doorbell-smart-camera'],
-        content_name: 'جرس الباب الذكي بالكاميرا',
-        value: parseFloat(totalPrice || '1999'),
-        currency: 'EGP',
-        num_items: 1
-      })
+    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function' && orderId) {
+      try {
+        (window as any).fbq('track', 'Purchase', {
+          content_type: 'product',
+          content_ids: ['doorbell-smart-camera'],
+          content_name: 'جرس الباب الذكي بالكاميرا',
+          value: parseFloat(totalPrice || '1999'),
+          currency: 'EGP',
+          num_items: 1
+        })
+      } catch (fbqError) {
+        console.log('Meta Pixel Purchase tracking error:', fbqError)
+      }
     }
   }, [searchParams])
 

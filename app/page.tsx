@@ -63,14 +63,18 @@ export default function HomePage() {
 
   // Meta Pixel ViewContent tracking on page load
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).fbq) {
-      (window as any).fbq('track', 'ViewContent', {
-        content_type: 'product',
-        content_ids: ['doorbell-smart-camera'],
-        content_name: PRODUCT_NAME,
-        value: parseFloat(PRICE),
-        currency: 'EGP'
-      })
+    if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+      try {
+        (window as any).fbq('track', 'ViewContent', {
+          content_type: 'product',
+          content_ids: ['doorbell-smart-camera'],
+          content_name: PRODUCT_NAME,
+          value: parseFloat(PRICE),
+          currency: 'EGP'
+        })
+      } catch (fbqError) {
+        console.log('Meta Pixel ViewContent tracking error:', fbqError)
+      }
     }
   }, [])
 

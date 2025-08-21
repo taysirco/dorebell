@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { trackMetaPixel, trackTikTokPixel } from '@/lib/pixel-utils'
 
 interface OrderFormData {
   fullName: string
@@ -187,36 +188,32 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
         }
 
         // TikTok Lead Tracking
-        if (typeof window !== 'undefined' && (window as any).ttq) {
-          (window as any).ttq.track('SubmitForm', {
-            content_type: 'product',
-            content_id: 'doorbell-smart-camera',
-            content_name: productName,
-            value: parseInt(price) * formData.quantity,
-            currency: 'EGP',
-            quantity: formData.quantity,
-            description: 'Order form submission - Lead generated'
-          })
-        }
+        trackTikTokPixel('SubmitForm', {
+          content_type: 'product',
+          content_id: 'doorbell-smart-camera',
+          content_name: productName,
+          value: parseInt(price) * formData.quantity,
+          currency: 'EGP',
+          quantity: formData.quantity,
+          description: 'Order form submission - Lead generated'
+        })
 
         // Meta Pixel Lead Tracking
-        if (typeof window !== 'undefined' && (window as any).fbq) {
-          (window as any).fbq('track', 'Lead', {
-            content_name: productName,
-            value: parseInt(price) * formData.quantity,
-            currency: 'EGP'
-          })
+        trackMetaPixel('Lead', {
+          content_name: productName,
+          value: parseInt(price) * formData.quantity,
+          currency: 'EGP'
+        })
 
-          // Also track as InitiateCheckout
-          (window as any).fbq('track', 'InitiateCheckout', {
-            content_type: 'product',
-            content_ids: ['doorbell-smart-camera'],
-            content_name: productName,
-            value: parseInt(price) * formData.quantity,
-            currency: 'EGP',
-            num_items: formData.quantity
-          })
-        }
+        // Also track as InitiateCheckout
+        trackMetaPixel('InitiateCheckout', {
+          content_type: 'product',
+          content_ids: ['doorbell-smart-camera'],
+          content_name: productName,
+          value: parseInt(price) * formData.quantity,
+          currency: 'EGP',
+          num_items: formData.quantity
+        })
 
         // Redirect to thank you page with order details
         const totalPrice = parseInt(price) * formData.quantity

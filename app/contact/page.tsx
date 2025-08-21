@@ -87,15 +87,19 @@ export default function ContactPage() {
         }
 
         // Meta Pixel Contact Tracking
-        if (typeof window !== 'undefined' && (window as any).fbq) {
-          (window as any).fbq('track', 'Contact', {
-            content_name: 'Contact Form Submission'
-          })
+        if (typeof window !== 'undefined' && typeof (window as any).fbq === 'function') {
+          try {
+            (window as any).fbq('track', 'Contact', {
+              content_name: 'Contact Form Submission'
+            })
 
-          // Also track as Lead
-          (window as any).fbq('track', 'Lead', {
-            content_name: `Contact: ${formData.subject}`
-          })
+            // Also track as Lead
+            (window as any).fbq('track', 'Lead', {
+              content_name: `Contact: ${formData.subject}`
+            })
+          } catch (fbqError) {
+            console.log('Meta Pixel Contact tracking error:', fbqError)
+          }
         }
 
         setSubmitSuccess(true)
