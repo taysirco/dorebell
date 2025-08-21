@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Performance optimizations */
+@layer base {
+  /* Critical styles for better CLS */
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+  }
+
+  /* Improve image performance */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Ensure images are visible */
+  img {
+    opacity: 1;
+  }
+
+  /* Basic section styling */
+  section {
+    display: block;
+  }
+
+  /* Optimize animations */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Improve button performance */
+  button, [role="button"] {
+    touch-action: manipulation;
+    transform: translateZ(0);
+  }
+}
+
+/* RTL Utilities */
+.rtl {
+  direction: rtl;
+}
+
+.rtl .text-right {
+  text-align: right;
+}
+
+.rtl .text-left {
+  text-align: left;
+}
+
+/* Custom RTL spacing utilities */
+.rtl .mr-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.rtl .ml-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.rtl .pr-4 {
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+.rtl .pl-4 {
+  padding-right: 1rem;
+  padding-left: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom components */
+@layer components {
+  .btn-primary {
+    @apply bg-rose-red hover:bg-rose-red/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
+    /* Mobile optimizations */
+    @apply active:scale-95 active:bg-rose-red/95;
+    @apply touch-manipulation;
+    /* Ensure minimum touch target size on mobile */
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .btn-secondary {
+    @apply bg-navy hover:bg-navy/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 border-2 border-navy;
+    /* Mobile optimizations */
+    @apply active:scale-95 active:bg-navy/95;
+    @apply touch-manipulation;
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100;
+    /* Mobile optimizations */
+    @apply mx-2 sm:mx-0;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none transition-all;
+    /* Mobile optimizations */
+    @apply text-base; /* Prevents zoom on iOS */
+    min-height: 44px;
+  }
+  
+  .section-padding {
+    @apply py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Mobile-specific optimizations */
+  .mobile-scroll-container {
+    @apply overflow-x-auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: transform;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 300px;
+  }
+  
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  .mobile-text-responsive {
+    @apply text-sm sm:text-base lg:text-lg;
+  }
+  
+  .mobile-heading-responsive {
+    @apply text-2xl sm:text-3xl lg:text-4xl xl:text-5xl;
+  }
+  
+  .mobile-padding-responsive {
+    @apply p-3 sm:p-4 lg:p-6;
+  }
+}
+
+/* Arabic text optimization */
+.arabic-text {
+  font-feature-settings: "liga" on, "calt" on;
+  text-rendering: optimizeLegibility;
+}
+
+/* Animations */
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
+
+/* Loading states */
+.loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Sticky positioning for mobile bar */
+.sticky-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  /* Add safe area for iPhone X+ */
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Mobile-specific performance optimizations */
+@media (max-width: 768px) {
+  /* Improve scroll performance on mobile */
+  .mobile-scroll-container {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Optimize images for mobile */
+  .mobile-optimized-image {
+    content-visibility: auto;
+    contain-intrinsic-size: 300px;
+  }
+  
+  /* Better touch interaction */
+  .touch-friendly {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Prevent text selection on interactive elements */
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* Fix for mobile viewport issues */
+  .mobile-full-height {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Better mobile spacing */
+  .mobile-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Mobile navigation improvements */
+  .mobile-nav {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-optimized {
+    padding: 1.5rem;
+  }
+  
+  .tablet-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-optimized {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Dark mode support for mobile */
+@media (prefers-color-scheme: dark) {
+  .auto-dark-mode {
+    color-scheme: dark;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus improvements for keyboard navigation */
+.focus-visible:focus {
+  outline: 2px solid #1e3a8a;
+  outline-offset: 2px;
+}
+
+/* Mobile landscape optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-mobile {
+    padding: 0.5rem;
+  }
+  
+  .landscape-mobile .section-padding {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}

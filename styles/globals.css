@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* RTL Utilities */
+.rtl {
+  direction: rtl;
+}
+
+.rtl .text-right {
+  text-align: right;
+}
+
+.rtl .text-left {
+  text-align: left;
+}
+
+/* Custom RTL spacing utilities */
+.rtl .mr-auto {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.rtl .ml-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.rtl .pr-4 {
+  padding-left: 1rem;
+  padding-right: 0;
+}
+
+.rtl .pl-4 {
+  padding-right: 1rem;
+  padding-left: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom components */
+@layer components {
+  .btn-primary {
+    @apply bg-rose-red hover:bg-rose-red/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply bg-navy hover:bg-navy/90 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 border-2 border-navy;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy focus:border-transparent outline-none transition-all;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Arabic text optimization */
+.arabic-text {
+  font-feature-settings: "liga" on, "calt" on;
+  text-rendering: optimizeLegibility;
+}
+
+/* Animations */
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
+
+/* Loading states */
+.loading {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Sticky positioning for mobile bar */
+.sticky-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
