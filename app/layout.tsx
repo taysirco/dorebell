@@ -189,7 +189,7 @@ export default function RootLayout({
               'https://connect.facebook.net/en_US/fbevents.js');
               
               try {
-                fbq('init', '568427635944659');
+                fbq('init', '654285637690717');
                 fbq('track', 'PageView');
               } catch (error) {
                 console.log('Meta Pixel initialization error:', error);
@@ -199,7 +199,7 @@ export default function RootLayout({
         />
         <noscript
           dangerouslySetInnerHTML={{
-            __html: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=568427635944659&ev=PageView&noscript=1" />`
+            __html: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=654285637690717&ev=PageView&noscript=1" />`
           }}
         />
         {/* End Meta Pixel Code */}

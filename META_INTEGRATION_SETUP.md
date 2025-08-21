@@ -10,14 +10,14 @@
 
 ```bash
 # Meta Conversions API Integration
-META_ACCESS_TOKEN=EAAOsCc8AoTcBPCFebYPZBZB8hxXktYdHEdAR3qyPd3HnD9ZCCoA0NEzeDu0LJotfjSKYfjRA1sFnZAh6K3tFZBKf37ZCZBD6J46WVjwBoizv3faNblE6tk5mSkzdCrYeNSOZCjfQcteOuIGwtQrhZCRCe0MeGHcvGmBpc18824I8f4keYSGIQUhyPouh4FJ9YVsscVwZDZD
+META_ACCESS_TOKEN=EAAQD7Y9Aw1gBPEdgTGb7U8rWM5Hd1IPNZA7EwvUhF5pihHUPy3NxGZArdd1Y7fkuJTor6ZBg4bebAMfeZBEMGvENypvuCau7TcO7xr5iXMKWHwymwVF96VgYBTGkKZBljW7t1nEUB9ZA1x0pAg3t0oIjOjZAtJtpIGDLWPSAyUNQfWDWmmRZANfwPaBAwMtE6XSxsQZDZD
 ENABLE_META_API=true
 META_TEST_EVENT_CODE=TEST12345
 ```
 
 ### 2. Meta Pixel Information
-- **Pixel ID**: `568427635944659`
-- **Access Token**: `EAAOsCc8AoTc...` (shortened for security)
+- **Pixel ID**: `654285637690717`
+- **Access Token**: `EAAQD7Y9Aw1g...` (shortened for security)
 - **API Version**: `v19.0`
 - **API Endpoint**: `https://graph.facebook.com/v19.0`
 
