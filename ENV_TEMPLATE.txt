@@ -6,7 +6,7 @@ MAKE_ORDER_WEBHOOK_URL=https://hook.eu2.make.com/647r1oe7sbrzgi6jex2jhby12rpk5vs
 MAKE_API_KEY=your-make-com-api-key
 
 # TikTok Events API Integration
-TIKTOK_ACCESS_TOKEN=a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0
+TIKTOK_ACCESS_TOKEN=4b9a5abddd403ced5be3eaf1b02cfb318a516b3b
 ENABLE_TIKTOK_API=true
 
 # Notification Settings

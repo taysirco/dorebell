@@ -3,7 +3,7 @@ import crypto from 'crypto'
 // TikTok Events API Configuration
 const TIKTOK_CONFIG = {
   PIXEL_ID: 'D2JK9NRC77UFE4JPKPVG',
-  ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || 'a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0',
+  ACCESS_TOKEN: process.env.TIKTOK_ACCESS_TOKEN || '4b9a5abddd403ced5be3eaf1b02cfb318a516b3b',
   API_ENDPOINT: 'https://business-api.tiktok.com/open_api/v1.3/event/track/',
   ENABLED: process.env.ENABLE_TIKTOK_API === 'true'
 }

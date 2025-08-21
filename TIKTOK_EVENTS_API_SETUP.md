@@ -10,13 +10,13 @@
 
 ```bash
 # TikTok Events API Integration
-TIKTOK_ACCESS_TOKEN=a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0
+TIKTOK_ACCESS_TOKEN=4b9a5abddd403ced5be3eaf1b02cfb318a516b3b
 ENABLE_TIKTOK_API=true
 ```
 
 ### 2. TikTok Pixel Information
 - **Pixel ID**: `D2JK9NRC77UFE4JPKPVG`
-- **Access Token**: `a1b4e5a88fb4052c71245e0a36dc22dc28d90bc0`
+- **Access Token**: `4b9a5abddd403ced5be3eaf1b02cfb318a516b3b`
 - **API Endpoint**: `https://business-api.tiktok.com/open_api/v1.3/event/track/`
 
 ## Implemented Events
