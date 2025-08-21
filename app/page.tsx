@@ -34,6 +34,9 @@ const WHATSAPP_NUMBER = '201205234797'
 
 export default function HomePage() {
   const [showStickyBar, setShowStickyBar] = useState(false)
+  const [isVideoMuted, setIsVideoMuted] = useState(true)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [showSoundPrompt, setShowSoundPrompt] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -268,21 +271,203 @@ export default function HomePage() {
               </div>
               
               {/* Installation Video */}
-              <div className="mt-6 bg-gray-50 rounded-xl p-4">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3 text-center">
-                  📹 طريقة التركيب السهلة
-                </h3>
-                <video
-                  controls
-                  className="w-full rounded-lg shadow-md"
-                  poster="/images/how-it-work.jpg"
-                  preload="none"
-                  width="600"
-                  height="400"
-                >
-                  <source src="/videos/install-how-to-run.mp4" type="video/mp4" />
-                  المتصفح لا يدعم تشغيل الفيديو
-                </video>
+              <div className="mt-6 bg-gradient-to-br from-blue-50 via-gray-50 to-purple-50 rounded-xl p-4 border border-gray-200 shadow-sm">
+                <div className="text-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                    📹 طريقة التركيب السهلة
+                  </h3>
+                  <div className="flex items-center justify-center space-x-2 space-x-reverse text-xs text-gray-500">
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">✨ يعمل تلقائياً</span>
+                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full">🎯 3 خطوات فقط</span>
+                  </div>
+                </div>
+                <div className="relative group">
+                  <video
+                    ref={(video) => {
+                      if (video) {
+                        // Auto-play when video comes into view
+                        const observer = new IntersectionObserver(
+                          (entries) => {
+                            entries.forEach((entry) => {
+                              if (entry.isIntersecting) {
+                                video.play().catch(() => {
+                                  // Fallback if autoplay fails
+                                  console.log('Autoplay prevented by browser')
+                                })
+                                setIsVideoPlaying(true)
+                              } else {
+                                video.pause()
+                                setIsVideoPlaying(false)
+                              }
+                            })
+                          },
+                          { threshold: 0.3 }
+                        )
+                        observer.observe(video)
+
+                        // Event listeners for video state
+                        video.addEventListener('play', () => {
+                          setIsVideoPlaying(true)
+                          // Show sound prompt after 3 seconds if still muted
+                          setTimeout(() => {
+                            if (video.muted) {
+                              setShowSoundPrompt(true)
+                            }
+                          }, 3000)
+                        })
+                        video.addEventListener('pause', () => setIsVideoPlaying(false))
+                        video.addEventListener('volumechange', () => {
+                          setIsVideoMuted(video.muted)
+                          if (!video.muted) {
+                            setShowSoundPrompt(false)
+                          }
+                        })
+                      }
+                    }}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    controls
+                    className="w-full rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl"
+                    poster="/images/how-it-work.jpg"
+                    preload="metadata"
+                    width="600"
+                    height="400"
+                  >
+                    <source src="/videos/install-how-to-run.mp4" type="video/mp4" />
+                    المتصفح لا يدعم تشغيل الفيديو
+                  </video>
+                  
+                  {/* Live indicator */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <div className={`flex items-center space-x-1 space-x-reverse bg-red-500 text-white text-xs px-2 py-1 rounded-full transition-opacity ${isVideoPlaying ? 'animate-pulse' : 'opacity-70'}`}>
+                      <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+                      <span>مباشر</span>
+                    </div>
+                  </div>
+
+                  {/* Auto-play indicator */}
+                  <div className="absolute top-3 left-3 z-10">
+                    <div className="bg-green-500 text-white text-xs px-2 py-1 rounded flex items-center space-x-1 space-x-reverse">
+                      <span>⚡</span>
+                      <span>تلقائي</span>
+                    </div>
+                  </div>
+
+                  {/* Sound control overlay */}
+                  <div className="absolute bottom-3 right-3 z-10">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        const video = e.currentTarget.parentElement?.parentElement?.querySelector('video')
+                        if (video) {
+                          video.muted = !video.muted
+                          setIsVideoMuted(video.muted)
+                        }
+                      }}
+                      className="bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-all duration-200 hover:scale-110"
+                      title={isVideoMuted ? 'تشغيل الصوت' : 'كتم الصوت'}
+                    >
+                      {isVideoMuted ? '🔇' : '🔊'}
+                    </button>
+                  </div>
+
+                  {/* Video info overlay */}
+                  <div className="absolute bottom-3 left-3 z-10">
+                    <div className="bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center space-x-1 space-x-reverse">
+                      <span>📹</span>
+                      <span>دليل التركيب</span>
+                    </div>
+                  </div>
+
+                  {/* Play/Pause overlay for mobile */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity md:hidden">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault()
+                        const video = e.currentTarget.parentElement?.parentElement?.querySelector('video')
+                        if (video) {
+                          if (video.paused) {
+                            video.play()
+                          } else {
+                            video.pause()
+                          }
+                        }
+                      }}
+                      className="bg-white/20 backdrop-blur-sm text-white p-4 rounded-full hover:bg-white/30 transition-all"
+                    >
+                      {isVideoPlaying ? '⏸️' : '▶️'}
+                    </button>
+                  </div>
+
+                  {/* Sound prompt notification */}
+                  {showSoundPrompt && (
+                    <div className="absolute inset-x-4 top-1/2 transform -translate-y-1/2 z-20">
+                      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-4 rounded-lg shadow-lg animate-bounce">
+                        <div className="flex items-center space-x-2 space-x-reverse">
+                          <span className="text-lg">🔊</span>
+                          <div className="flex-1">
+                            <p className="font-semibold text-sm">🎵 تفعيل الصوت للحصول على التجربة الكاملة</p>
+                            <p className="text-xs opacity-90">اضغط على أيقونة الصوت لسماع الشرح</p>
+                          </div>
+                          <button
+                            onClick={() => setShowSoundPrompt(false)}
+                            className="text-white/80 hover:text-white ml-2"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Loading overlay */}
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg flex items-center justify-center"
+                       style={{ display: 'none' }}
+                       id="video-loading">
+                    <div className="text-gray-500 text-center">
+                      <div className="text-2xl mb-2">📹</div>
+                      <p className="text-sm">جارٍ تحميل الفيديو...</p>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Video description */}
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-600 mb-3">
+                    🎯 شاهد كيفية تركيب الجهاز في 3 خطوات بسيطة
+                  </p>
+                  
+                  {/* Quick steps preview */}
+                  <div className="grid grid-cols-3 gap-2 mt-4 text-xs">
+                    <div className="bg-white rounded-lg p-2 shadow-sm border">
+                      <div className="text-blue-500 font-bold mb-1">1️⃣</div>
+                      <p className="text-gray-600">اختر المكان</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-2 shadow-sm border">
+                      <div className="text-green-500 font-bold mb-1">2️⃣</div>
+                      <p className="text-gray-600">ثبت الجهاز</p>
+                    </div>
+                    <div className="bg-white rounded-lg p-2 shadow-sm border">
+                      <div className="text-purple-500 font-bold mb-1">3️⃣</div>
+                      <p className="text-gray-600">اربط بالتطبيق</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-center space-x-4 space-x-reverse mt-3 text-xs text-gray-500">
+                    <span>⏱️ مدة الفيديو: 2 دقيقة</span>
+                    <span>📱 مناسب للمبتدئين</span>
+                    <span>🔧 بدون أدوات معقدة</span>
+                  </div>
+                  
+                  {/* Call to action */}
+                  <div className="mt-4 p-3 bg-gradient-to-r from-green-100 to-blue-100 rounded-lg border border-green-200">
+                    <p className="text-sm font-medium text-gray-800">
+                      💡 <span className="font-bold text-green-700">نصيحة:</span> احتفظ بالهاتف قريباً أثناء التركيب!
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
