@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
 
     // Create order object for logging/processing
     const order = {
-      id: `ORDER_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `DB${Date.now().toString().slice(-6)}${Math.random().toString(36).substr(2, 3).toUpperCase()}`,
       timestamp: orderData.timestamp,
       customer: {
         fullName: orderData.fullName,
