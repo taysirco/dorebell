@@ -1,9 +1,13 @@
-# Copy this file to .env.local and fill in your Make.com webhook URLs
+# Copy this file to .env.local and fill in your webhook URLs and API keys
 
 # Make.com Integration
 MAKE_CONTACT_WEBHOOK_URL=https://hook.eu2.make.com/647r1oe7sbrzgi6jex2jhby12rpk5vsd
 MAKE_ORDER_WEBHOOK_URL=https://hook.eu2.make.com/647r1oe7sbrzgi6jex2jhby12rpk5vsd
 MAKE_API_KEY=your-make-com-api-key
+
+# TikTok Events API Integration
+TIKTOK_ACCESS_TOKEN=d893b9d1452befeca7e896ee1716518d51236f78
+ENABLE_TIKTOK_API=true
 
 # Notification Settings
 ADMIN_EMAIL=admin@dorebell.com

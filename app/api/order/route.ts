@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendOrderToMake } from '@/lib/make-webhook'
+import { trackPlaceAnOrder, trackInitiateCheckout } from '@/lib/tiktok-api'
 
 interface OrderData {
   fullName: string
@@ -179,6 +180,29 @@ export async function POST(request: NextRequest) {
     } catch (makeError) {
       console.error('Make.com webhook error:', makeError)
       // Continue processing even if Make.com fails
+    }
+
+    // TikTok Events API - Track PlaceAnOrder (server-side)
+    try {
+      await trackPlaceAnOrder({
+        content_id: 'doorbell-smart-camera',
+        content_name: orderData.productName,
+        value: totalPrice,
+        currency: 'EGP',
+        order_id: order.id,
+        user: {
+          phone: orderData.phoneNumber,
+          external_id: order.id
+        },
+        context: {
+          ip: ip,
+          user_agent: request.headers.get('user-agent') || '',
+          url: request.headers.get('origin') || ''
+        }
+      })
+    } catch (tiktokError) {
+      console.error('TikTok Events API error:', tiktokError)
+      // Continue processing even if TikTok fails
     }
 
     // TODO: In production, implement additional integrations:

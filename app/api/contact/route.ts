@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactToMake } from '@/lib/make-webhook'
+import { trackContact } from '@/lib/tiktok-api'
 
 interface ContactData {
   name: string
@@ -137,6 +138,27 @@ export async function POST(request: NextRequest) {
     } catch (makeError) {
       console.error('Make.com contact webhook error:', makeError)
       // Continue processing even if Make.com fails
+    }
+
+    // TikTok Events API - Track Contact (server-side)
+    try {
+      await trackContact({
+        content_id: 'contact-form',
+        content_name: `Contact: ${contactData.subject}`,
+        user: {
+          phone: contactData.phone,
+          email: contactData.email,
+          external_id: `contact_${Date.now()}`
+        },
+        context: {
+          ip: ip,
+          user_agent: request.headers.get('user-agent') || '',
+          url: request.headers.get('origin') || ''
+        }
+      })
+    } catch (tiktokError) {
+      console.error('TikTok Events API error:', tiktokError)
+      // Continue processing even if TikTok fails
     }
 
     // TODO: In production, implement additional integrations:
