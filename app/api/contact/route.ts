@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendContactToMake } from '@/lib/make-webhook'
 import { trackContact, trackLead } from '@/lib/tiktok-api'
+import { trackMetaContact, trackMetaLead } from '@/lib/meta-api'
 
 interface ContactData {
   name: string
@@ -176,6 +177,33 @@ export async function POST(request: NextRequest) {
     } catch (tiktokError) {
       console.error('TikTok Events API error:', tiktokError)
       // Continue processing even if TikTok fails
+    }
+
+    // Meta Conversions API - Track Contact and Lead (server-side)
+    try {
+      await trackMetaContact({
+        content_name: `Contact: ${contactData.subject}`,
+        user_email: contactData.email,
+        user_phone: contactData.phone,
+        external_id: `contact_${Date.now()}`,
+        client_ip: ip,
+        user_agent: request.headers.get('user-agent') || '',
+        event_source_url: request.headers.get('origin') || ''
+      })
+
+      // Also track as Lead event for Meta
+      await trackMetaLead({
+        content_name: `Contact Lead: ${contactData.subject}`,
+        user_email: contactData.email,
+        user_phone: contactData.phone,
+        external_id: `contact_${Date.now()}`,
+        client_ip: ip,
+        user_agent: request.headers.get('user-agent') || '',
+        event_source_url: request.headers.get('origin') || ''
+      })
+    } catch (metaError) {
+      console.error('Meta Conversions API error:', metaError)
+      // Continue processing even if Meta fails
     }
 
     // TODO: In production, implement additional integrations:

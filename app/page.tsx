@@ -61,6 +61,19 @@ export default function HomePage() {
     }
   }, [])
 
+  // Meta Pixel ViewContent tracking on page load
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'ViewContent', {
+        content_type: 'product',
+        content_ids: ['doorbell-smart-camera'],
+        content_name: PRODUCT_NAME,
+        value: parseFloat(PRICE),
+        currency: 'EGP'
+      })
+    }
+  }, [])
+
   const scrollToOrderForm = () => {
     const orderForm = document.getElementById('order-form')
     if (orderForm) {

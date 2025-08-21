@@ -199,6 +199,25 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
           })
         }
 
+        // Meta Pixel Lead Tracking
+        if (typeof window !== 'undefined' && (window as any).fbq) {
+          (window as any).fbq('track', 'Lead', {
+            content_name: productName,
+            value: parseInt(price) * formData.quantity,
+            currency: 'EGP'
+          })
+
+          // Also track as InitiateCheckout
+          (window as any).fbq('track', 'InitiateCheckout', {
+            content_type: 'product',
+            content_ids: ['doorbell-smart-camera'],
+            content_name: productName,
+            value: parseInt(price) * formData.quantity,
+            currency: 'EGP',
+            num_items: formData.quantity
+          })
+        }
+
         // Redirect to thank you page with order details
         const totalPrice = parseInt(price) * formData.quantity
         const thankYouUrl = `/thank-you?orderId=${result.orderId}&name=${encodeURIComponent(formData.fullName)}&total=${totalPrice}`

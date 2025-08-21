@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendOrderToMake } from '@/lib/make-webhook'
 import { trackPlaceAnOrder, trackInitiateCheckout, trackLead } from '@/lib/tiktok-api'
+import { trackMetaPurchase, trackMetaInitiateCheckout, trackMetaLead } from '@/lib/meta-api'
 
 interface OrderData {
   fullName: string
@@ -221,6 +222,38 @@ export async function POST(request: NextRequest) {
     } catch (tiktokError) {
       console.error('TikTok Events API error:', tiktokError)
       // Continue processing even if TikTok fails
+    }
+
+    // Meta Conversions API - Track Purchase and Lead (server-side)
+    try {
+      await trackMetaPurchase({
+        value: totalPrice,
+        currency: 'EGP',
+        content_ids: ['doorbell-smart-camera'],
+        content_name: orderData.productName,
+        num_items: orderData.quantity,
+        order_id: order.id,
+        user_phone: orderData.phoneNumber,
+        external_id: order.id,
+        client_ip: ip,
+        user_agent: request.headers.get('user-agent') || '',
+        event_source_url: request.headers.get('origin') || ''
+      })
+
+      // Also track as Lead event for Meta
+      await trackMetaLead({
+        value: totalPrice,
+        currency: 'EGP',
+        content_name: `Product Order: ${orderData.productName}`,
+        user_phone: orderData.phoneNumber,
+        external_id: order.id,
+        client_ip: ip,
+        user_agent: request.headers.get('user-agent') || '',
+        event_source_url: request.headers.get('origin') || ''
+      })
+    } catch (metaError) {
+      console.error('Meta Conversions API error:', metaError)
+      // Continue processing even if Meta fails
     }
 
     // TODO: In production, implement additional integrations:
