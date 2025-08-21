@@ -158,7 +158,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* TikTok Pixel Code */}
+        {/* TikTok Pixel Code Start */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -173,6 +173,7 @@ export default function RootLayout({
             `
           }}
         />
+        {/* TikTok Pixel Code End */}
       </head>
       <body className={`${cairo.className} rtl arabic-text bg-gray-50 antialiased`}>
         {children}
