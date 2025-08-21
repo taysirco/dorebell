@@ -76,6 +76,16 @@ export default function ContactPage() {
       })
 
       if (response.ok) {
+        // TikTok Contact Lead Tracking
+        if (typeof window !== 'undefined' && (window as any).ttq) {
+          (window as any).ttq.track('Contact', {
+            content_type: 'contact',
+            content_id: 'contact-form',
+            content_name: 'Contact Form Submission',
+            description: 'Contact form submission - Lead generated'
+          })
+        }
+
         setSubmitSuccess(true)
         setFormData({
           name: '',

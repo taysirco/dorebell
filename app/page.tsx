@@ -47,6 +47,20 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // TikTok ViewContent tracking on page load
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).ttq) {
+      (window as any).ttq.track('ViewContent', {
+        content_type: 'product',
+        content_id: 'doorbell-smart-camera',
+        content_name: PRODUCT_NAME,
+        value: parseFloat(PRICE),
+        currency: 'EGP',
+        description: 'Product page viewed'
+      })
+    }
+  }, [])
+
   const scrollToOrderForm = () => {
     const orderForm = document.getElementById('order-form')
     if (orderForm) {

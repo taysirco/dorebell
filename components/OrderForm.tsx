@@ -176,13 +176,26 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
       if (response.ok) {
         const result = await response.json()
         
-        // Fire analytics event
+        // Fire analytics events
         if (typeof window !== 'undefined' && window.dataLayer) {
           window.dataLayer.push({ 
             event: 'lead_submitted',
             order_id: result.orderId,
             value: parseInt(price) * formData.quantity,
             currency: 'EGP'
+          })
+        }
+
+        // TikTok Lead Tracking
+        if (typeof window !== 'undefined' && (window as any).ttq) {
+          (window as any).ttq.track('SubmitForm', {
+            content_type: 'product',
+            content_id: 'doorbell-smart-camera',
+            content_name: productName,
+            value: parseInt(price) * formData.quantity,
+            currency: 'EGP',
+            quantity: formData.quantity,
+            description: 'Order form submission - Lead generated'
           })
         }
 

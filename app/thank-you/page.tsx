@@ -31,6 +31,19 @@ function ThankYouContent() {
         currency: 'EGP'
       })
     }
+
+    // TikTok Conversion Tracking
+    if (typeof window !== 'undefined' && (window as any).ttq && orderId) {
+      (window as any).ttq.track('CompletePayment', {
+        content_type: 'product',
+        content_id: 'doorbell-smart-camera',
+        content_name: 'جرس الباب الذكي بالكاميرا',
+        value: parseFloat(totalPrice || '1999'),
+        currency: 'EGP',
+        order_id: orderId,
+        description: 'Purchase completed - Conversion tracked'
+      })
+    }
   }, [searchParams])
 
 
