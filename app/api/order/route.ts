@@ -1,110 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-// Make.com webhook configuration
-const MAKE_WEBHOOK_URL = process.env.MAKE_WEBHOOK_URL || 'https://hook.eu1.make.com/YOUR_WEBHOOK_ID'
-const MAKE_CONTACT_WEBHOOK_URL = process.env.MAKE_CONTACT_WEBHOOK_URL || 'https://hook.eu1.make.com/YOUR_CONTACT_WEBHOOK_ID'
-
-// Function to send order data to Make.com webhook for Google Sheets integration
-async function sendToMakeWebhook(orderData: any) {
-  if (!MAKE_WEBHOOK_URL || MAKE_WEBHOOK_URL.includes('YOUR_WEBHOOK_ID')) {
-    console.log('Make.com webhook URL not configured. Skipping integration.')
-    return
-  }
-
-  try {
-    const response = await fetch(MAKE_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Dorebell-Orders/1.0'
-      },
-      body: JSON.stringify({
-        // Flatten the data structure for easier Google Sheets integration
-        orderId: orderData.id,
-        timestamp: orderData.timestamp,
-        customerName: orderData.customer.fullName,
-        customerPhone: orderData.customer.phoneNumber,
-        customerWhatsapp: orderData.customer.whatsappNumber,
-        customerCity: orderData.customer.address.city,
-        customerArea: orderData.customer.address.area,
-        customerAddress: orderData.customer.address.details,
-        productName: orderData.product.name,
-        productUnitPrice: orderData.product.unitPrice,
-        productQuantity: orderData.product.quantity,
-        productTotalPrice: orderData.product.totalPrice,
-        paymentMethod: orderData.paymentMethod,
-        notes: orderData.notes,
-        status: orderData.status,
-        source: orderData.source,
-        // Additional formatted fields for Google Sheets
-        orderDate: new Date(orderData.timestamp).toLocaleDateString('ar-EG'),
-        orderTime: new Date(orderData.timestamp).toLocaleTimeString('ar-EG'),
-        totalPriceFormatted: `${orderData.product.totalPrice} جنيه`,
-        customerInfo: `${orderData.customer.fullName} - ${orderData.customer.phoneNumber} - واتساب: ${orderData.customer.whatsappNumber}`,
-        deliveryAddress: `${orderData.customer.address.city} - ${orderData.customer.address.area} - ${orderData.customer.address.details}`
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`Make.com webhook failed: ${response.status} ${response.statusText}`)
-    }
-
-    console.log('✅ Order successfully sent to Make.com webhook')
-    
-    // Log success for monitoring
-    const result = await response.json().catch(() => ({ success: true }))
-    console.log('Make.com response:', result)
-    
-  } catch (error) {
-    console.error('❌ Failed to send order to Make.com:', error)
-    throw error
-  }
-}
-
-// Function to send contact form data to Make.com webhook
-async function sendContactToMakeWebhook(contactData: any) {
-  if (!MAKE_CONTACT_WEBHOOK_URL || MAKE_CONTACT_WEBHOOK_URL.includes('YOUR_CONTACT_WEBHOOK_ID')) {
-    console.log('Make.com contact webhook URL not configured. Skipping integration.')
-    return
-  }
-
-  try {
-    const response = await fetch(MAKE_CONTACT_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Dorebell-Contact/1.0'
-      },
-      body: JSON.stringify({
-        messageId: contactData.id,
-        timestamp: contactData.timestamp,
-        customerName: contactData.customer.name,
-        customerPhone: contactData.customer.phone,
-        customerEmail: contactData.customer.email,
-        subject: contactData.inquiry.subject,
-        message: contactData.inquiry.message,
-        orderNumber: contactData.inquiry.orderNumber,
-        status: contactData.status,
-        source: contactData.source,
-        // Additional formatted fields
-        contactDate: new Date(contactData.timestamp).toLocaleDateString('ar-EG'),
-        contactTime: new Date(contactData.timestamp).toLocaleTimeString('ar-EG'),
-        customerInfo: `${contactData.customer.name} - ${contactData.customer.phone}`,
-        hasOrderNumber: contactData.inquiry.orderNumber ? 'نعم' : 'لا'
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`Make.com contact webhook failed: ${response.status} ${response.statusText}`)
-    }
-
-    console.log('✅ Contact message successfully sent to Make.com webhook')
-    
-  } catch (error) {
-    console.error('❌ Failed to send contact to Make.com:', error)
-    throw error
-  }
-}
+import { sendOrderToMake } from '@/lib/make-webhook'
 
 interface OrderData {
   fullName: string
@@ -266,9 +161,17 @@ export async function POST(request: NextRequest) {
     console.log(JSON.stringify(order, null, 2))
     console.log('========================')
 
-    // Send to Make.com for Google Sheets integration
+    // Send to Make.com for automation and Google Sheets integration
     try {
-      await sendToMakeWebhook(order)
+      await sendOrderToMake({
+        name: orderData.fullName,
+        email: `${orderData.phoneNumber}@whatsapp.com`, // Placeholder email
+        phone: orderData.phoneNumber,
+        address: `${orderData.area}, ${orderData.address}`,
+        city: orderData.city,
+        quantity: orderData.quantity,
+        totalPrice: totalPrice
+      })
     } catch (makeError) {
       console.error('Make.com webhook error:', makeError)
       // Continue processing even if Make.com fails

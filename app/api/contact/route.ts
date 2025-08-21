@@ -1,53 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-// Make.com webhook configuration
-const MAKE_CONTACT_WEBHOOK_URL = process.env.MAKE_CONTACT_WEBHOOK_URL || 'https://hook.eu1.make.com/YOUR_CONTACT_WEBHOOK_ID'
-
-// Function to send contact form data to Make.com webhook
-async function sendContactToMakeWebhook(contactData: any) {
-  if (!MAKE_CONTACT_WEBHOOK_URL || MAKE_CONTACT_WEBHOOK_URL.includes('YOUR_CONTACT_WEBHOOK_ID')) {
-    console.log('Make.com contact webhook URL not configured. Skipping integration.')
-    return
-  }
-
-  try {
-    const response = await fetch(MAKE_CONTACT_WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'Dorebell-Contact/1.0'
-      },
-      body: JSON.stringify({
-        messageId: contactData.id,
-        timestamp: contactData.timestamp,
-        customerName: contactData.customer.name,
-        customerPhone: contactData.customer.phone,
-        customerEmail: contactData.customer.email,
-        subject: contactData.inquiry.subject,
-        message: contactData.inquiry.message,
-        orderNumber: contactData.inquiry.orderNumber,
-        status: contactData.status,
-        source: contactData.source,
-        // Additional formatted fields for Google Sheets
-        contactDate: new Date(contactData.timestamp).toLocaleDateString('ar-EG'),
-        contactTime: new Date(contactData.timestamp).toLocaleTimeString('ar-EG'),
-        customerInfo: `${contactData.customer.name} - ${contactData.customer.phone}`,
-        hasOrderNumber: contactData.inquiry.orderNumber ? 'نعم' : 'لا',
-        urgencyLevel: contactData.inquiry.subject.includes('شكوى') ? 'عالي' : 'عادي'
-      })
-    })
-
-    if (!response.ok) {
-      throw new Error(`Make.com contact webhook failed: ${response.status} ${response.statusText}`)
-    }
-
-    console.log('✅ Contact message successfully sent to Make.com webhook')
-    
-  } catch (error) {
-    console.error('❌ Failed to send contact to Make.com:', error)
-    throw error
-  }
-}
+import { sendContactToMake } from '@/lib/make-webhook'
 
 interface ContactData {
   name: string
@@ -174,9 +126,14 @@ export async function POST(request: NextRequest) {
     console.log(JSON.stringify(contactMessage, null, 2))
     console.log('==========================')
 
-    // Send to Make.com for Google Sheets integration
+    // Send to Make.com for automation and Google Sheets integration
     try {
-      await sendContactToMakeWebhook(contactMessage)
+      await sendContactToMake({
+        name: contactData.name,
+        email: contactData.email || '',
+        phone: contactData.phone,
+        message: `${contactData.subject}: ${contactData.message}${contactData.orderNumber ? ` (رقم الطلب: ${contactData.orderNumber})` : ''}`
+      })
     } catch (makeError) {
       console.error('Make.com contact webhook error:', makeError)
       // Continue processing even if Make.com fails

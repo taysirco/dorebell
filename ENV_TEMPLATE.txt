@@ -1,0 +1,16 @@
+# Copy this file to .env.local and fill in your Make.com webhook URLs
+
+# Make.com Integration
+MAKE_CONTACT_WEBHOOK_URL=https://hook.eu1.make.com/YOUR_CONTACT_WEBHOOK_ID
+MAKE_ORDER_WEBHOOK_URL=https://hook.eu1.make.com/YOUR_ORDER_WEBHOOK_ID
+MAKE_API_KEY=your-make-com-api-key
+
+# Notification Settings
+ADMIN_EMAIL=admin@dorebell.com
+ENABLE_WEBHOOKS=true
+
+# Security
+WEBHOOK_SECRET=your-webhook-secret-key-123
+
+# Environment
+NODE_ENV=development
