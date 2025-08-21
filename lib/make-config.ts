@@ -9,7 +9,7 @@ export const MAKE_CONFIG = {
   WEBHOOK_SECRET: process.env.WEBHOOK_SECRET || '',
   
   // Settings
-  ENABLED: process.env.ENABLE_WEBHOOKS === 'true',
+  ENABLED: process.env.ENABLE_WEBHOOKS === 'true' && process.env.NODE_ENV === 'production',
   ADMIN_EMAIL: process.env.ADMIN_EMAIL || 'admin@dorebell.com',
   
   // Retry configuration
