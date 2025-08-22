@@ -461,8 +461,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
               {/* One Piece Option */}
               <label className={`relative block cursor-pointer p-3 rounded-lg border-2 transition-all duration-200 ${
                 formData.quantity === 1 
-                  ? 'border-blue-500 bg-blue-50 shadow-md' 
-                  : 'border-gray-200 bg-white hover:border-blue-300'
+                  ? 'border-blue-600 bg-gradient-to-br from-blue-100 to-blue-200 shadow-lg ring-2 ring-blue-300 ring-opacity-50' 
+                  : 'border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm'
               }`}>
                 <input
                   type="radio"
@@ -474,9 +474,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                 />
                 <div className="text-center">
                   <div className="text-base mb-1">📱</div>
-                  <div className="font-medium text-gray-800 text-sm">قطعة واحدة</div>
-                  <div className="text-base font-bold text-blue-600">{price} جنيه</div>
-                  <div className="text-xs text-gray-600 mt-1">الأكثر طلباً</div>
+                  <div className={`font-medium text-sm ${formData.quantity === 1 ? 'text-blue-900' : 'text-gray-800'}`}>قطعة واحدة</div>
+                  <div className={`text-base font-bold ${formData.quantity === 1 ? 'text-blue-700' : 'text-blue-600'}`}>{price} جنيه</div>
+                  <div className={`text-xs mt-1 ${formData.quantity === 1 ? 'text-blue-700' : 'text-gray-600'}`}>الأكثر طلباً</div>
                 </div>
                 {formData.quantity === 1 && (
                   <div className="absolute top-2 left-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
@@ -490,8 +490,8 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
               {/* Two Pieces Option */}
               <label className={`relative block cursor-pointer p-3 rounded-lg border-2 transition-all duration-200 ${
                 formData.quantity === 2 
-                  ? 'border-green-500 bg-green-50 shadow-md' 
-                  : 'border-gray-200 bg-white hover:border-green-300'
+                  ? 'border-green-600 bg-gradient-to-br from-green-100 to-green-200 shadow-lg ring-2 ring-green-300 ring-opacity-50' 
+                  : 'border-gray-200 bg-white hover:border-green-300 hover:shadow-sm'
               }`}>
                 <input
                   type="radio"
@@ -503,9 +503,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                 />
                 <div className="text-center">
                   <div className="text-base mb-1">📱📱</div>
-                  <div className="font-medium text-gray-800 text-sm">قطعتين</div>
-                  <div className="text-base font-bold text-green-600">{parseInt(price) * 2} جنيه</div>
-                  <div className="text-xs text-green-600 mt-1 font-medium">توفير إضافي!</div>
+                  <div className={`font-medium text-sm ${formData.quantity === 2 ? 'text-green-900' : 'text-gray-800'}`}>قطعتين</div>
+                  <div className={`text-base font-bold ${formData.quantity === 2 ? 'text-green-700' : 'text-green-600'}`}>{parseInt(price) * 2} جنيه</div>
+                  <div className={`text-xs mt-1 font-medium ${formData.quantity === 2 ? 'text-green-700' : 'text-green-600'}`}>توفير إضافي!</div>
                 </div>
                 {formData.quantity === 2 && (
                   <div className="absolute top-2 left-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
