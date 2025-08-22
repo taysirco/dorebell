@@ -257,8 +257,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+    <div className="max-w-2xl mx-auto relative">
+      {/* Decorative background elements */}
+      <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 via-purple-500 to-green-400 rounded-xl blur opacity-20 animate-pulse"></div>
+      
+      <div className="relative bg-gradient-to-br from-blue-50 via-white to-green-50 rounded-xl shadow-2xl p-8 border border-blue-200 backdrop-blur-sm">
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
             🔥 اطلب الآن - عرض محدود!
@@ -270,7 +273,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 mb-6 border border-green-200">
+        <div className="bg-gradient-to-r from-green-50 via-blue-50 to-purple-50 rounded-xl p-6 mb-6 border border-green-200 shadow-inner">
           <div className="text-center">
             <h3 className="text-lg font-semibold text-gray-800 mb-4">💰 ملخص الفاتورة</h3>
             
@@ -449,7 +452,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
           </div>
 
           {/* Quantity Options */}
-          <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 border border-blue-200">
+          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-green-50 rounded-xl p-6 border border-blue-200 shadow-inner">
             <label className="block text-lg font-semibold text-gray-800 mb-4 text-center">
               📦 اختر الكمية المطلوبة
             </label>
