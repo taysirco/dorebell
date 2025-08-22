@@ -452,14 +452,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
           </div>
 
           {/* Quantity Options */}
-          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-green-50 rounded-xl p-6 border border-blue-200 shadow-inner">
-            <label className="block text-lg font-semibold text-gray-800 mb-4 text-center">
+          <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-green-50 rounded-xl p-4 border border-blue-200 shadow-inner">
+            <label className="block text-base font-semibold text-gray-800 mb-3 text-center">
               📦 اختر الكمية المطلوبة
             </label>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {/* One Piece Option */}
-              <label className={`relative block cursor-pointer p-4 rounded-lg border-2 transition-all duration-200 ${
+              <label className={`relative block cursor-pointer p-3 rounded-lg border-2 transition-all duration-200 ${
                 formData.quantity === 1 
                   ? 'border-blue-500 bg-blue-50 shadow-md' 
                   : 'border-gray-200 bg-white hover:border-blue-300'
@@ -473,10 +473,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                   className="sr-only"
                 />
                 <div className="text-center">
-                  <div className="text-base mb-2">📱</div>
-                  <div className="font-semibold text-gray-800">قطعة واحدة</div>
-                  <div className="text-lg font-bold text-blue-600">{price} جنيه</div>
-                  <div className="text-sm text-gray-600 mt-1">الأكثر طلباً</div>
+                  <div className="text-base mb-1">📱</div>
+                  <div className="font-medium text-gray-800 text-sm">قطعة واحدة</div>
+                  <div className="text-base font-bold text-blue-600">{price} جنيه</div>
+                  <div className="text-xs text-gray-600 mt-1">الأكثر طلباً</div>
                 </div>
                 {formData.quantity === 1 && (
                   <div className="absolute top-2 left-2 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
@@ -488,7 +488,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
               </label>
 
               {/* Two Pieces Option */}
-              <label className={`relative block cursor-pointer p-4 rounded-lg border-2 transition-all duration-200 ${
+              <label className={`relative block cursor-pointer p-3 rounded-lg border-2 transition-all duration-200 ${
                 formData.quantity === 2 
                   ? 'border-green-500 bg-green-50 shadow-md' 
                   : 'border-gray-200 bg-white hover:border-green-300'
@@ -502,10 +502,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                   className="sr-only"
                 />
                 <div className="text-center">
-                  <div className="text-base mb-2">📱📱</div>
-                  <div className="font-semibold text-gray-800">قطعتين</div>
-                  <div className="text-lg font-bold text-green-600">{parseInt(price) * 2} جنيه</div>
-                  <div className="text-sm text-green-600 mt-1 font-medium">توفير إضافي!</div>
+                  <div className="text-base mb-1">📱📱</div>
+                  <div className="font-medium text-gray-800 text-sm">قطعتين</div>
+                  <div className="text-base font-bold text-green-600">{parseInt(price) * 2} جنيه</div>
+                  <div className="text-xs text-green-600 mt-1 font-medium">توفير إضافي!</div>
                 </div>
                 {formData.quantity === 2 && (
                   <div className="absolute top-2 left-2 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
