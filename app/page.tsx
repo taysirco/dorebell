@@ -1044,7 +1044,7 @@ export default function HomePage() {
           </button>
           
           <p className="text-sm mt-4 opacity-90">
-            ✅ تركيب مجاني | ✅ شحن مدعوم | ✅ دعم 24/7
+            ✅ تركيب مجاني | ✅ شحن سريع | ✅ دعم 24/7
           </p>
         </div>
       </section>
@@ -1129,7 +1129,7 @@ export default function HomePage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✅</span>
-                  شحن مدعوم (50 جنيه مخصومة بعد التأكيد)
+                  شحن سريع (50 جنيه مخصومة بعد التأكيد)
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="text-green-400">✅</span>

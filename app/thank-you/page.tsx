@@ -224,7 +224,7 @@ function ThankYouContent() {
                   <span className="text-white font-bold text-sm sm:text-base">3</span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 text-base sm:text-lg">🚚 توصيل سريع مدعوم</h3>
+                  <h3 className="font-bold text-gray-900 text-base sm:text-lg">🚚 توصيل سريع</h3>
                   <p className="text-gray-600 mt-1 text-sm sm:text-base leading-relaxed">التوصيل خلال <span className="font-semibold text-green-600">2-3 أيام عمل</span> - <span className="font-bold text-blue-600">رسوم الشحن مخصومة من الفاتورة</span></p>
                   <div className="mt-2 flex items-center gap-2">
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">

@@ -552,7 +552,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
             <div className="text-center">
               <div className="flex items-center justify-center gap-4 text-sm text-gray-600">
                 <span>✅ أمان مضمون</span>
-                <span>✅ شحن مجاني</span>
+                <span>✅ شحن سريع</span>
                 <span>✅ ضمان 3 سنوات</span>
               </div>
             </div>
