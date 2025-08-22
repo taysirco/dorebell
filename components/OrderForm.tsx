@@ -473,7 +473,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                   className="sr-only"
                 />
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱</div>
+                  <div className="text-lg mb-2">📱</div>
                   <div className="font-semibold text-gray-800">قطعة واحدة</div>
                   <div className="text-lg font-bold text-blue-600">{price} جنيه</div>
                   <div className="text-sm text-gray-600 mt-1">الأكثر طلباً</div>
@@ -502,7 +502,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({ productName, price }) => {
                   className="sr-only"
                 />
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📱📱</div>
+                  <div className="text-lg mb-2">📱📱</div>
                   <div className="font-semibold text-gray-800">قطعتين</div>
                   <div className="text-lg font-bold text-green-600">{parseInt(price) * 2} جنيه</div>
                   <div className="text-sm text-green-600 mt-1 font-medium">توفير إضافي!</div>
