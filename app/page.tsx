@@ -693,7 +693,7 @@ export default function HomePage() {
               <div className="text-5xl mb-4">📹</div>
               <h3 className="text-2xl font-bold mb-3">كاميرا مراقبة</h3>
               <div className="text-3xl font-bold text-red-400 mb-2">3000+ جنيه</div>
-              <ul className="text-left space-y-2 text-white/80">
+              <ul className="text-right space-y-2 text-white/80 rtl">
                 <li>✓ تسجيل الفيديو</li>
                 <li>✓ رؤية ليلية</li>
                 <li>✓ التطبيق على الموبايل</li>
@@ -707,7 +707,7 @@ export default function HomePage() {
               <div className="text-5xl mb-4">📞</div>
               <h3 className="text-2xl font-bold mb-3">تكتافون</h3>
               <div className="text-3xl font-bold text-red-400 mb-2">2500+ جنيه</div>
-              <ul className="text-left space-y-2 text-white/80">
+              <ul className="text-right space-y-2 text-white/80 rtl">
                 <li>✓ تواصل صوتي</li>
                 <li>✓ فتح الباب</li>
                 <li>✗ بدون كاميرا HD</li>
@@ -724,7 +724,7 @@ export default function HomePage() {
               <div className="text-5xl mb-4">🛡️</div>
               <h3 className="text-2xl font-bold mb-3">جرسنا الذكي</h3>
               <div className="text-3xl font-bold text-white mb-2">1999 جنيه فقط</div>
-              <ul className="text-left space-y-2 text-white">
+              <ul className="text-right space-y-2 text-white rtl">
                 <li>✅ كاميرا HD + رؤية ليلية</li>
                 <li>✅ صوت ثنائي الاتجاه</li>
                 <li>✅ تطبيق موبايل متطور</li>
